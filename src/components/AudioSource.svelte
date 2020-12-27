@@ -1,11 +1,10 @@
 <script lang="ts">
-    import type RTCState from "./RTCState/RTCState";
-    import RTCStartState from "./RTCState/RTCStartState";
-    import RTCAnswerState from "./RTCState/RTCAnswerState";
-    import RTCIceState from "./RTCState/RTCIceState";
+    import { RTCState, RTCAnswerState, RTCStartState } from "./state";
     import SocketClient from "./SocketClient";
 
     const socket = new SocketClient();
+    const remoteStream = new MediaStream();
+    const remoteAudio = document.querySelector("audio");
     let state: RTCState;
 
     socket.getSocket().onopen = (e: Event) => {
@@ -27,5 +26,13 @@
 
     socket.on("answer", async (answer) => {
         await state.addAnswer(answer);
+
+        state.getConnection().ontrack = (event) =>
+            remoteStream.addTrack(event.track);
+        remoteAudio.srcObject = remoteStream;
     });
 </script>
+
+<audio controls>
+    <track kind="captions" />
+</audio>

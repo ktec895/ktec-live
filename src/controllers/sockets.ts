@@ -32,3 +32,5 @@ export default class SocketClient {
   _socket: WebSocket
   _events: Map<string, (data: object) => void>
 }
+
+export { SocketClient }
