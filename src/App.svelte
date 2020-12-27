@@ -1,8 +1,7 @@
 <script lang="ts">
-  import SocketClient from './SocketClient'
+  import AudioSource from './AudioSource'
 
-  const ws = new SocketClient()
-  ws.on('chads', (message) => console.log('message'))
+  const source = new AudioSource()
 </script>
 
 <h1>Main</h1>

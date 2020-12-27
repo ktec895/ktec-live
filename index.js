@@ -8,8 +8,16 @@ const app = express()
 const server = require('http').createServer(app)
 const wss = new Server({ server })
 
+const SocketClient = require('./SocketClient')
+
 wss.on('connection', (ws) => {
   console.log('client connected')
+  const client = SocketClient(ws)
+
+  client.on('authenticate', (data) => {
+    client.send('hello', data)
+  })
+
   ws.on('close', () => console.log('client disconnected'))
 })
 

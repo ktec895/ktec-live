@@ -4,7 +4,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public",
+    "start": "node index",
     "validate": "svelte-check"
   },
   "devDependencies": {

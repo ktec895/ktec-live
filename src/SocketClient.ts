@@ -2,24 +2,24 @@ const HOST = location.origin.replace(/^http/, 'ws')
 
 export default class SocketClient {
   constructor() {
-    console.log(HOST)
     this._socket = new WebSocket(HOST)
-    this._events = new Map<string, (message: string) => void>()
+    this._events = new Map<string, (data: object) => void>()
 
-    this._socket.onmessage = (event: MessageEvent) => this._handle(event.data)
+    this._socket.onmessage = (event: MessageEvent) => {
+      this._handle(event.data)
+    }
   }
 
-  on(event: string, handler: (message: string) => void) {
+  getSocket() {
+    return this._socket
+  }
+
+  on(event: string, handler: (data: object) => void) {
     this._events[event] = handler
   }
 
-  send(event: string, data: any) {
-    const message = {
-      event,
-      data,
-    }
-
-    this._socket.send(JSON.stringify(message))
+  send(event: string, data: object) {
+    this._socket.send(JSON.stringify({ event, data }))
   }
 
   _handle(message: string) {
@@ -30,5 +30,5 @@ export default class SocketClient {
   }
 
   _socket: WebSocket
-  _events: Map<string, (message: string) => void>
+  _events: Map<string, (data: object) => void>
 }
